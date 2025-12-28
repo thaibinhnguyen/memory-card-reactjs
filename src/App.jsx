@@ -22,10 +22,10 @@ function App() {
     "🍑",
     "🍒",
   ];
-  const {cards, score, moves, isGameComplete, handleCardClicked, initializeGame} = useGameLogic(cardValues);
+  const {cards, score, moves, isGameComplete, isPlaying, timeElapsed, handleCardClicked, initializeGame} = useGameLogic(cardValues);
   return (
     <div className="app">
-      <GameHeader score={score} moves={moves} onReset={initializeGame} />
+      <GameHeader score={score} moves={moves} onReset={initializeGame} timeElapsed={timeElapsed} isPlaying={isPlaying} />
       {isGameComplete && <WinMessage moves={moves} />}
       <div className="cards-grid">
         {cards.map(card => (

@@ -48,6 +48,13 @@ body {
   text-align: center;
 }
 
+.timer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .stats {
   display: flex;
   gap: 30px;

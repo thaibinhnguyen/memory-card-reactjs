@@ -7,6 +7,8 @@ export const useGameLogic = (cardValues) => {
   const [isBusy, setIsBusy] = useState(false)
   const [score, setScore] = useState(0);
   const [moves, setMoves] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [timeElapsed, setTimeElapsed] = useState(0)
 
   const shuffleArray = (array) => {
     const shuffled = [...array]
@@ -32,15 +34,41 @@ export const useGameLogic = (cardValues) => {
     setScore(0);
     setFlippedCards([]);
     setMatchedCards([]);
+    setIsPlaying(false);
+    setTimeElapsed(0);
   }
 
   useEffect(() => {
     initializeGame()
   }, [])
 
+  useEffect(() => {
+    if(isPlaying) {
+        const myTimeInterval = setInterval(() => {
+            setTimeElapsed((prev) => prev + 1)
+        }, 1000)
+        return () => {
+            clearInterval(myTimeInterval)
+        }
+    } else {
+        return;
+    }
+  }, [isPlaying])
+
+  useEffect(() => {
+    if(matchedCards.length === cards.length) {
+        setIsPlaying(false)
+    }
+  }, [matchedCards, cards])
+
+
   const handleCardClicked = (card) => {
     if (isBusy || card.isFlipped || card.isMatched) {
       return;
+    }
+
+    if(!isPlaying) {
+        setIsPlaying(true);
     }
 
     // Flip the clicked card
@@ -85,5 +113,5 @@ export const useGameLogic = (cardValues) => {
   }
 
   const isGameComplete = matchedCards.length === cards.length
-  return {cards, score, moves, isGameComplete, handleCardClicked, initializeGame}
+  return {cards, score, moves, isGameComplete, isPlaying, timeElapsed, handleCardClicked, initializeGame}
 }
